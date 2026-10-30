@@ -1,0 +1,50 @@
+---
+title: "AI-Generated Images and Human-Drawn Art"
+author: "Your Name"
+format:
+  html:
+    toc: true
+    code-fold: true
+---
+
+# AI-Generated Images and Human-Drawn Art
+
+This graph compares the image counts reported by the two datasets. It does
+**not** measure how much art was created overall: TWIGMA counts AI-generated
+images shared on Twitter from January 2021 to March 2023, while AI-ArtBench is
+a curated benchmark with human-drawn and AI-generated images.
+
+## Dataset image counts
+
+```{r}
+library(ggplot2)
+
+image_counts <- tibble::tibble(
+  image_type = c("AI-generated Twitter images",
+                 "AI-generated images",
+                 "Human-drawn images"),
+  count = c(800000, 120000, 60000)
+)
+
+ggplot(image_counts, aes(x = reorder(image_type, count), y = count,
+                         fill = image_type)) +
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  scale_y_continuous(labels = \(x) format(x, big.mark = ",",
+                                          scientific = FALSE)) +
+  labs(
+    title = "Image counts reported by the two datasets",
+    subtitle = "Dataset sample sizes—not total art creation",
+    x = NULL,
+    y = "Number of images",
+    caption = paste(
+      "TWIGMA reports about 800,000 AI-generated images posted on Twitter.",
+      "AI-ArtBench reports 120,000 AI-generated and 60,000 human-drawn images.",
+      "The sources have different collection methods and time coverage."
+    )
+  ) +
+  theme_minimal()
+```
+
+Sources: [TWIGMA on Zenodo](https://zenodo.org/records/11374087) and
+[AI-ArtBench on Kaggle](https://www.kaggle.com/datasets/ravidussilva/real-ai-art).
